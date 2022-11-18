@@ -31,6 +31,10 @@ namespace Hambakliinki.Controllers
         {
             return View();
         }
+        public IActionResult Role()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
