@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hambakliinki.Models;
+using Microsoft.AspNetCore.Authorization;
+using EASendMail;
+using SmptClient = EASendMail.SmtpClient;
 
 namespace Hambakliinki.Controllers
 {
@@ -19,6 +22,7 @@ namespace Hambakliinki.Controllers
         }
 
         // GET: klients
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.klient.ToListAsync());
@@ -53,12 +57,14 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,nimi,perekonnanimi,Phone,vanus")] klient klient)
+        public async Task<IActionResult> Create([Bind("Id,nimi,perekonnanimi,Email,Phone,vanus")] klient klient)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(klient);
                 await _context.SaveChangesAsync();
+                Email(klient);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(klient);
@@ -85,7 +91,7 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,nimi,perekonnanimi,Phone,vanus")] klient klient)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,nimi,perekonnanimi,Email,Phone,vanus")] klient klient)
         {
             if (id != klient.Id)
             {
@@ -155,6 +161,32 @@ namespace Hambakliinki.Controllers
         private bool klientExists(int id)
         {
           return _context.klient.Any(e => e.Id == id);
+        }
+        public async void Email(klient klient)
+        {
+            try
+            {
+                SmtpMail oMail = new SmtpMail("TryIt");
+                oMail.From = "hambakliinik@hotmail.com";
+                oMail.To = klient.Email;
+                oMail.Subject = "Kiri";
+                oMail.TextBody = "Äitah! et broneeritud, helistame teile sobival ajal";
+                SmtpServer oServer = new SmtpServer("smtp.office365.com");
+                oServer.User = "hambakliinik@hotmail.com";
+                oServer.Password = "ZubnoiVrach123!";
+                oServer.Port = 587;
+                oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
+                Console.WriteLine("start to send email over TLS...");
+                SmtpClient oSmtp = new SmtpClient();
+                oSmtp.SendMail(oServer, oMail);
+
+                Console.WriteLine("email was sent successfully!");
+            }
+            catch (Exception ep)
+            {
+                Console.WriteLine("failed to send email with the following error:");
+                Console.WriteLine(ep.Message);
+            }
         }
     }
 }

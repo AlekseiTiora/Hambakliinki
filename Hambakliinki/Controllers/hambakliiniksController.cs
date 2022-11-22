@@ -18,7 +18,7 @@ namespace Hambakliinki.Controllers
         {
             _context = context;
         }
-        [Authorize]
+        [Authorize(Policy = "writepolicy")]
 
         // GET: hambakliiniks
         public async Task<IActionResult> Index()

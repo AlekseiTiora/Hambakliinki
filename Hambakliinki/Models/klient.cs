@@ -10,6 +10,7 @@ namespace Hambakliinki.Models
         public string nimi { get; set; }
         [Required(ErrorMessage = "On vaja sisesta oma perekonnanime!!")]
         public string perekonnanimi { get; set; }
+        public string Email { get; set; }
         [Required(ErrorMessage = "Sisesta oma tel.number!")]
         [RegularExpression(@"\+372.+", ErrorMessage = "Vale telefoni number, Alguses +372...")]
         public string Phone { get; set; }
