@@ -14,5 +14,10 @@ namespace Hambakliinki.Models
         [Required(ErrorMessage = "Sisesta oma tel.number!")]
         [RegularExpression(@"\+372.+", ErrorMessage = "Vale telefoni number, Alguses +372...")]
         public string Phone { get; set; }
-        public int vanus { get; set; }    }
+        public DateTime Data { get; set; }
+        public int teenuseidId { get; set; }
+        public teenuseid? teenuseid { get; set; }
+        public int hambaarstId { get; set; }
+        public hambaarst? hambaarst { get; set; }
+    }
 }

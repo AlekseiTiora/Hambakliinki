@@ -19,7 +19,6 @@ namespace Hambakliinki.Controllers
             _context = context;
         }
         [Authorize(Policy = "writepolicy")]
-
         // GET: hambaarsts
         public async Task<IActionResult> Index()
         {
@@ -55,7 +54,7 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("hambaarstId,nimi,perekonnanimi,spetsialiseerumine")] hambaarst hambaarst)
+        public async Task<IActionResult> Create([Bind("hambaarstId,nimi,perekonnanimi")] hambaarst hambaarst)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +86,7 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("hambaarstId,nimi,perekonnanimi,spetsialiseerumine")] hambaarst hambaarst)
+        public async Task<IActionResult> Edit(int id, [Bind("hambaarstId,nimi,perekonnanimi")] hambaarst hambaarst)
         {
             if (id != hambaarst.hambaarstId)
             {

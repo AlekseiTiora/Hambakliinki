@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hambakliinki.Models;
 using Microsoft.AspNetCore.Authorization;
-using EASendMail;
-using SmptClient = EASendMail.SmtpClient;
 
 namespace Hambakliinki.Controllers
 {
@@ -20,12 +18,12 @@ namespace Hambakliinki.Controllers
         {
             _context = context;
         }
-
-        // GET: klients
         [Authorize(Policy = "writepolicy")]
+        // GET: klients
         public async Task<IActionResult> Index()
         {
-              return View(await _context.klient.ToListAsync());
+            var db = _context.klient.Include(k => k.hambaarst).Include(k => k.teenuseid);
+            return View(await db.ToListAsync());
         }
 
         // GET: klients/Details/5
@@ -37,6 +35,8 @@ namespace Hambakliinki.Controllers
             }
 
             var klient = await _context.klient
+                .Include(k => k.hambaarst)
+                .Include(k => k.teenuseid)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (klient == null)
             {
@@ -49,6 +49,8 @@ namespace Hambakliinki.Controllers
         // GET: klients/Create
         public IActionResult Create()
         {
+            ViewData["hambaarstId"] = new SelectList(_context.hambaarst, "hambaarstId", "perekonnanimi");
+            ViewData["teenuseidId"] = new SelectList(_context.teenuseid, "teenuseidId", "teenuse");
             return View();
         }
 
@@ -57,16 +59,16 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,nimi,perekonnanimi,Email,Phone,vanus")] klient klient)
+        public async Task<IActionResult> Create([Bind("Id,nimi,perekonnanimi,Email,Phone,Data,teenuseidId,hambaarstId")] klient klient)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(klient);
                 await _context.SaveChangesAsync();
-                Email(klient);
-
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["hambaarstId"] = new SelectList(_context.hambaarst, "hambaarstId", "perekonnanimi", klient.hambaarstId);
+            ViewData["teenuseidId"] = new SelectList(_context.teenuseid, "teenuseidId", "teenuse", klient.teenuseidId);
             return View(klient);
         }
 
@@ -83,6 +85,8 @@ namespace Hambakliinki.Controllers
             {
                 return NotFound();
             }
+            ViewData["hambaarstId"] = new SelectList(_context.hambaarst, "hambaarstId", "perekonnanimi", klient.hambaarstId);
+            ViewData["teenuseidId"] = new SelectList(_context.teenuseid, "teenuseidId", "teenuse", klient.teenuseidId);
             return View(klient);
         }
 
@@ -91,7 +95,7 @@ namespace Hambakliinki.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,nimi,perekonnanimi,Email,Phone,vanus")] klient klient)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,nimi,perekonnanimi,Email,Phone,Data,teenuseidId,hambaarstId")] klient klient)
         {
             if (id != klient.Id)
             {
@@ -118,6 +122,8 @@ namespace Hambakliinki.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["hambaarstId"] = new SelectList(_context.hambaarst, "hambaarstId", "perekonnanimi", klient.hambaarstId);
+            ViewData["teenuseidId"] = new SelectList(_context.teenuseid, "teenuseidId", "teenuse", klient.teenuseidId);
             return View(klient);
         }
 
@@ -130,6 +136,8 @@ namespace Hambakliinki.Controllers
             }
 
             var klient = await _context.klient
+                .Include(k => k.hambaarst)
+                .Include(k => k.teenuseid)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (klient == null)
             {
@@ -161,32 +169,6 @@ namespace Hambakliinki.Controllers
         private bool klientExists(int id)
         {
           return _context.klient.Any(e => e.Id == id);
-        }
-        public async void Email(klient klient)
-        {
-            try
-            {
-                SmtpMail oMail = new SmtpMail("TryIt");
-                oMail.From = "hambakliinik@hotmail.com";
-                oMail.To = klient.Email;
-                oMail.Subject = "Kiri";
-                oMail.TextBody = "Äitah! et broneeritud, helistame teile sobival ajal";
-                SmtpServer oServer = new SmtpServer("smtp.office365.com");
-                oServer.User = "hambakliinik@hotmail.com";
-                oServer.Password = "ZubnoiVrach123!";
-                oServer.Port = 587;
-                oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
-                Console.WriteLine("start to send email over TLS...");
-                SmtpClient oSmtp = new SmtpClient();
-                oSmtp.SendMail(oServer, oMail);
-
-                Console.WriteLine("email was sent successfully!");
-            }
-            catch (Exception ep)
-            {
-                Console.WriteLine("failed to send email with the following error:");
-                Console.WriteLine(ep.Message);
-            }
         }
     }
 }

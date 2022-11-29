@@ -35,9 +35,19 @@
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="vanus" class="control-label"></label>
-                <input asp-for="vanus" class="form-control" />
-                <span asp-validation-for="vanus" class="text-danger"></span>
+                <label asp-for="Data" class="control-label"></label>
+                <input asp-for="Data" class="form-control" />
+                <span asp-validation-for="Data" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="teenuseidId" class="control-label"></label>
+                <select asp-for="teenuseidId" class="form-control" asp-items="ViewBag.teenuseidId"></select>
+                <span asp-validation-for="teenuseidId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="hambaarstId" class="control-label"></label>
+                <select asp-for="hambaarstId" class="form-control" asp-items="ViewBag.hambaarstId"></select>
+                <span asp-validation-for="hambaarstId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

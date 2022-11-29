@@ -8,6 +8,5 @@ namespace Hambakliinki.Models
         public int hambaarstId { set; get; }
         public string nimi { get; set; }
         public string perekonnanimi { get; set; }
-        public string spetsialiseerumine { get; set; }
     }
 }

@@ -19,9 +19,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.perekonnanimi)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.spetsialiseerumine)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,9 +30,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.perekonnanimi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.spetsialiseerumine)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.hambaarstId">Edit</a> |

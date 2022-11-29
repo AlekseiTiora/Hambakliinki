@@ -15,14 +15,14 @@ namespace Hambakliinki.Controllers
             this.roleManager = roleManager;
         }
 
-        [Authorize(Policy = "writepolicy")]
+        //[Authorize(Policy = "writepolicy")]
         public IActionResult Index()
         {
             var roles = roleManager.Roles.ToList();
             return View(roles);
         }
 
-        [Authorize(Policy = "writepolicy")]
+        //[Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             return View(new IdentityRole());

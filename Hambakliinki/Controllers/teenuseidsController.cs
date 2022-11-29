@@ -18,7 +18,7 @@ namespace Hambakliinki.Controllers
         {
             _context = context;
         }
-        [Authorize(Policy = "writepolicy")]
+        //[Authorize(Policy = "writepolicy")]
 
         // GET: teenuseids
         public async Task<IActionResult> Index()
