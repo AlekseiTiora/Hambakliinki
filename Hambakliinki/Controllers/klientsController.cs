@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hambakliinki.Models;
 using Microsoft.AspNetCore.Authorization;
+using EASendMail;
 
 namespace Hambakliinki.Controllers
 {
@@ -65,7 +66,10 @@ namespace Hambakliinki.Controllers
             {
                 _context.Add(klient);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Mail mail = new Mail();
+                mail.SendEmailDefault(klient.Data.ToString($"f"), User.Identity?.Name.ToString());
+                //Email(klient);
+                return RedirectToAction("Broneeri","Home");
             }
             ViewData["hambaarstId"] = new SelectList(_context.hambaarst, "hambaarstId", "perekonnanimi", klient.hambaarstId);
             ViewData["teenuseidId"] = new SelectList(_context.teenuseid, "teenuseidId", "teenuse", klient.teenuseidId);

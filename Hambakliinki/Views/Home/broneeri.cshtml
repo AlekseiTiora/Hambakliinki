@@ -1,25 +1,12 @@
 ﻿@model Hambakliinki.Models.klient
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary()
-    <p>Sisesta oma nimi: @Html.TextBoxFor(x => x.nimi)</p>
-    <p>Sisesta oma perekonnanimi: @Html.TextBoxFor(x => x.perekonnanimi)</p>
-    <p>Sisesta oma telefoni number: @Html.TextBoxFor(x => x.Phone)</p>
-   /* <p>
-        Sinu valik:
-        @Html.DropDownListFor(x =>x.teenuse,
-       new[]
-       {
-           new SelectListItem(){Text ="Üldine ennetus"},
-           new SelectListItem(){Text ="Täidised"},
-           new SelectListItem(){Text ="Juureravi"},
-           new SelectListItem(){Text ="Kirurgilised hambaraviteenused"},
-       }, "Vali teenus")
-
-    </p>*/
-    <p>
-    </p>
-    <input type="submit" value="Create" class="btn btn-primary" />
-
+@{
+    ViewData["Title"] = "Broneeri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="text-center">
+    <h1 class="display-4">Aitäh et valisid meie hambakliinik</h1>
+    <h3>Me kirjutasime sulle e-postile vadake palun!</h3>
+    <a href="/Home/Index"  class="btn btn-primary">minna kodulehele</a>
+</div>
+

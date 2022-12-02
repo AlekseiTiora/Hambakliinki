@@ -39,22 +39,23 @@
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="teenuseidId" class="control-label"></label>
+                <label asp-for="teenuseid" class="control-label"></label>
                 <select asp-for="teenuseidId" class ="form-control" asp-items="ViewBag.teenuseidId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="hambaarstId" class="control-label"></label>
+                <label asp-for="hambaarst" class="control-label"></label>
                 <select asp-for="hambaarstId" class ="form-control" asp-items="ViewBag.hambaarstId"></select>
             </div>
+            <br>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Home" asp-action="Index">Loobu</a>
 </div>
 
 @section Scripts {

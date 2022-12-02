@@ -27,15 +27,11 @@ namespace Hambakliinki.Controllers
         {
             return View();
         }
-        public IActionResult broneeri()
+        public IActionResult Broneeri()
         {
             return View();
         }
         public IActionResult Role()
-        {
-            return View();
-        }
-        public IActionResult Index1()
         {
             return View();
         }
